@@ -1,7 +1,7 @@
 {
-  "name": "flipboxfactory/craft-jwt",
+  "name": "meerkats/craft-jwt",
   "description": "JWT Authorization",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "craft-plugin",
   "require": {
     "craftcms/cms": "^3.0",
@@ -27,9 +27,9 @@
     "class": "flipbox\\craft\\jwt\\Jwt",
     "developer": "Flipbox Digital",
     "developerUrl": "https://www.flipboxdigital.com",
-    "changelogUrl": "https://raw.githubusercontent.com/flipboxfactory/craft-jwt/master/CHANGELOG.md",
-    "downloadUrl": "https://github.com/flipboxfactory/craft-jwt/archive/master.zip",
-    "documentationUrl": "https://github.com/flipboxfactory/craft-jwt/blob/master/README.md",
+    "changelogUrl": "https://raw.githubusercontent.com/meerkats/craft-jwt/master/CHANGELOG.md",
+    "downloadUrl": "https://github.com/meerkats/craft-jwt/archive/master.zip",
+    "documentationUrl": "https://github.com/meerkats/craft-jwt/blob/master/README.md",
     "schemaVersion": "1.0.0"
   }
 }
