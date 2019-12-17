@@ -29,6 +29,8 @@ class Identity extends Component
      * @param string $user
      * @param string|null $audience
      * @param int|null $expiration
+     * @param array|null $extraValues
+     * @param bool|null $ignoreIdentityInSignature
      * @return Token|null
      * @throws \craft\errors\SiteNotFoundException
      * @throws \yii\base\InvalidConfigException
@@ -36,21 +38,30 @@ class Identity extends Component
     public function issue(
         $user = 'CURRENT_USER',
         string $audience = null,
-        int $expiration = null
+        int $expiration = null,
+        array $extraValues = array(),
+        bool $ignoreIdentityInSignature = false
     ) {
         if (null === ($identity = UserHelper::resolveUser($user))) {
             $identity = new User();
         }
 
-        return Jwt::getInstance()->getBuilder()
+        $jwt = Jwt::getInstance()->getBuilder()
             ->setIssuer(Jwt::getInstance()->getSettings()->getIssuer())
             ->setAudience($this->resolveAudience($audience))
-            ->setId($identity->getId(), true)
-            ->setIssuedAt(time())
+            ->setId($identity->getId(), true);
+
+        if (count($extraValues)) {
+            foreach ($extraValues as $name => $value) {
+                $jwt->withClaim($name, $value);
+            }
+        }
+
+        return $jwt->setIssuedAt(time())
             ->setNotBefore(time())
             ->setExpiration($this->resolveTokenExpiration($expiration))
             ->set(TokenHelper::CLAIM_CSRF, Craft::$app->getRequest()->getCsrfToken())
-            ->sign(Jwt::getInstance()->getSettings()->getSigner(), TokenHelper::getSignatureKey($identity))
+            ->sign(Jwt::getInstance()->getSettings()->getSigner(), TokenHelper::getSignatureKey($ignoreIdentityInSignature ? null : $identity))
             ->getToken();
     }
 
